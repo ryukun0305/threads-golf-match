@@ -243,17 +243,8 @@ prefectures_cities = {
 # --- サイドバー：ログインと新規投稿 ---
 st.sidebar.markdown("### 👤 ログイン設定")
 
-# 入力値変更時に即座にセッションへ反映するコールバック関数
-def update_user():
-    st.session_state.logged_in_user = st.session_state.user_input_field
-
-st.sidebar.text_input(
-    "Threads ID（例: ryu_golf300yd）", 
-    value=st.session_state.logged_in_user, 
-    key="user_input_field",
-    on_change=update_user
-)
-
+# valueを外してkeyのみにし、セッションステートで直接保持させる
+st.sidebar.text_input("Threads ID（例: ryu_golf300yd）", key="logged_in_user")
 current_user = st.session_state.logged_in_user
 st.sidebar.markdown(f"ログイン中: **@{current_user}**")
 
