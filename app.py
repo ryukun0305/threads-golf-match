@@ -19,7 +19,6 @@ def load_posts():
                 return json.load(f)
         except Exception:
             pass
-    # デフォルトのサンプルデータ
     return [
         {
             "id": 1,
@@ -243,7 +242,18 @@ prefectures_cities = {
 
 # --- サイドバー：ログインと新規投稿 ---
 st.sidebar.markdown("### 👤 ログイン設定")
-st.sidebar.text_input("Threads ID（例: ryu_golf300yd）", key="logged_in_user")
+
+# 入力値変更時に即座にセッションへ反映するコールバック関数
+def update_user():
+    st.session_state.logged_in_user = st.session_state.user_input_field
+
+st.sidebar.text_input(
+    "Threads ID（例: ryu_golf300yd）", 
+    value=st.session_state.logged_in_user, 
+    key="user_input_field",
+    on_change=update_user
+)
+
 current_user = st.session_state.logged_in_user
 st.sidebar.markdown(f"ログイン中: **@{current_user}**")
 
@@ -282,7 +292,7 @@ with st.sidebar.form("create_post_form", clear_on_submit=False):
             "comments": []
         }
         st.session_state.posts.insert(0, new_post)
-        save_posts(st.session_state.posts)  # JSONファイルに保存
+        save_posts(st.session_state.posts)
         st.sidebar.success("投稿しました！")
 
 # --- サイドバー：おすすめゴルフギア ---
@@ -369,13 +379,13 @@ for post in filtered_posts:
         c_sub = st.form_submit_button("コメントする")
         if c_sub and c_input:
             post['comments'].append([current_user, c_input])
-            save_posts(st.session_state.posts)  # コメントもJSONファイルに保存
+            save_posts(st.session_state.posts)
             st.rerun()
 
     # 削除ボタン
     if st.button("🗑️ この募集を削除する", key=f"del_{post['id']}"):
         st.session_state.posts = [p for p in st.session_state.posts if p['id'] != post['id']]
-        save_posts(st.session_state.posts)  # 削除後もJSONファイルを更新
+        save_posts(st.session_state.posts)
         st.success("募集を削除しました。")
         st.rerun()
 
