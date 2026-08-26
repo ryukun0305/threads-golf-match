@@ -46,8 +46,12 @@ def save_posts(posts):
 if "posts" not in st.session_state:
     st.session_state.posts = load_posts()
 
+# URLクエリパラメータからユーザーIDを取得して初期設定
+query_params = st.query_params
+initial_user = query_params.get("user", "")
+
 if "logged_in_user" not in st.session_state:
-    st.session_state.logged_in_user = ""
+    st.session_state.logged_in_user = initial_user
 
 # レスポンシブ対応＆デザインCSS
 st.markdown("""
@@ -243,13 +247,28 @@ prefectures_cities = {
 # --- サイドバー：ログインと新規投稿 ---
 st.sidebar.markdown("### 👤 ログイン設定")
 
-# 初期値を空にしてプレースホルダーのみ表示
-user_input = st.sidebar.text_input(
+# 入力変更時にURLパラメータを更新
+def sync_user():
+    val = st.session_state.user_input_box.strip()
+    st.session_state.logged_in_user = val
+    if val:
+        st.query_params["user"] = val
+    else:
+        st.query_params.pop("user", None)
+
+user_val = st.sidebar.text_input(
     "Threads ID",
     value=st.session_state.logged_in_user,
-    placeholder="例: ryu_golf300yd"
+    placeholder="例: ryu_golf300yd",
+    key="user_input_box",
+    on_change=sync_user
 )
-st.session_state.logged_in_user = user_input.strip()
+
+# 初回アクセス時URLパラメータからの同期
+if user_val != st.session_state.logged_in_user:
+    st.session_state.logged_in_user = user_val
+    if user_val:
+        st.query_params["user"] = user_val
 
 current_user = st.session_state.logged_in_user
 if current_user:
