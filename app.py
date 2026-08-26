@@ -48,6 +48,30 @@ st.markdown("""
         margin-bottom: 10px;
         font-size: 13px;
     }
+    .gear-title {
+        font-weight: 700;
+        color: #0f1419;
+        margin-bottom: 3px;
+    }
+    .gear-desc {
+        color: #536471;
+        font-size: 12px;
+        line-height: 1.4;
+        margin-bottom: 6px;
+    }
+    .gear-link {
+        display: inline-block;
+        background-color: #0f1419;
+        color: #ffffff !important;
+        padding: 4px 10px;
+        border-radius: 6px;
+        font-size: 11px;
+        font-weight: 600;
+        text-decoration: none;
+    }
+    .gear-link:hover {
+        background-color: #272c30;
+    }
     .badge-mix {
         background-color: #e7f5ff;
         color: #0c8599;
@@ -222,26 +246,31 @@ with st.sidebar.form("create_post_form", clear_on_submit=False):
         })
         st.sidebar.success("投稿しました！")
 
-# --- サイドバー：おすすめゴルフギア（アフィリエイト枠） ---
+# --- サイドバー：おすすめゴルフギア（売れ筋アイテム） ---
 st.sidebar.markdown("---")
 st.sidebar.markdown("### 💡 おすすめゴルフギア")
-st.sidebar.markdown("<span style='font-size: 12px; color: #536471;'>ラウンドや自宅練習で本当に役立つ厳選アイテム</span>", unsafe_allow_html=True)
+st.sidebar.markdown("<span style='font-size: 12px; color: #536471;'>楽天ランキング上位の厳選人気アイテム</span>", unsafe_allow_html=True)
 
 st.sidebar.markdown("""
 <div class="gear-card">
-    <b>🔭 USB充電式レーザー距離計</b><br>
-    <span style="color: #536471;">高低差測定・ピンサーチ機能付き。ラウンドの必須アイテム！</span><br>
-    <a href="https://hb.afl.rakuten.co.jp/" target="_blank" style="color: #0c8599; font-weight: 600; text-decoration: none;">👉 詳細を見る（楽天）</a>
+    <div class="gear-title">🔭 レーザー距離計</div>
+    <div class="gear-desc">高低差・ピンサーチ・USB充電対応。楽天1位常連の人気モデル。</div>
+    <a href="https://search.rakuten.co.jp/search/mall/%E3%82%B4%E3%83%AB%E3%83%95+%E3%83%AC%E3%83%BC%E3%82%84%E3%83%BC%E8%B7%9D%E9%9B%A2%E8%A8%88/" target="_blank" class="gear-link">楽天で見る ↗</a>
 </div>
 <div class="gear-card">
-    <b>🏌️‍♂️ 室内スイング練習スティック</b><br>
-    <span style="color: #536471;">自宅で手軽にタメとヘッドスピード強化。</span><br>
-    <a href="https://hb.afl.rakuten.co.jp/" target="_blank" style="color: #0c8599; font-weight: 600; text-decoration: none;">👉 詳細を見る（楽天）</a>
+    <div class="gear-title">🏌️ 音で分かるスイング練習器具</div>
+    <div class="gear-desc">自宅で理想のタメと加速タイミングが掴める大ヒット練習スティック。</div>
+    <a href="https://search.rakuten.co.jp/search/mall/%E3%83%80%E3%82%A4%E3%83%A4%E3%82%B9%E3%82%A4%E3%83%B3%E3%82%B0/" target="_blank" class="gear-link">楽天で見る ↗</a>
 </div>
 <div class="gear-card">
-    <b>⚡ 高コスパ ツアー系ウレタンボール</b><br>
-    <span style="color: #536471;">スーンと伸びる直進性と優れたスピン性能。</span><br>
-    <a href="https://hb.afl.rakuten.co.jp/" target="_blank" style="color: #0c8599; font-weight: 600; text-decoration: none;">👉 詳細を見る（楽天）</a>
+    <div class="gear-title">⛳ ツアーティー（Tour Tee 80mm）</div>
+    <div class="gear-desc">折れにくく抵抗を極限まで減らした大人気ロングティー。</div>
+    <a href="https://search.rakuten.co.jp/search/mall/TOUR+TEE/" target="_blank" class="gear-link">楽天で見る ↗</a>
+</div>
+<div class="gear-card">
+    <div class="gear-title">⚡ 大人気ゴルフボール（HONMA D1等）</div>
+    <div class="gear-desc">圧倒的なコスパと圧倒的な飛距離でリピーター続出のベストセラー。</div>
+    <a href="https://search.rakuten.co.jp/search/mall/%E6%9C%AC%E9%96%93%E3%82%B4%E3%83%AB%E3%83%95+D1+%E3%83%9C%E3%83%BC%E3%83%AB/" target="_blank" class="gear-link">楽天で見る ↗</a>
 </div>
 """, unsafe_allow_html=True)
 
