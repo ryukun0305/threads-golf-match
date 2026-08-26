@@ -47,7 +47,7 @@ if "posts" not in st.session_state:
     st.session_state.posts = load_posts()
 
 if "logged_in_user" not in st.session_state:
-    st.session_state.logged_in_user = "ryu_golf300yd"
+    st.session_state.logged_in_user = ""
 
 # レスポンシブ対応＆デザインCSS
 st.markdown("""
@@ -243,10 +243,19 @@ prefectures_cities = {
 # --- サイドバー：ログインと新規投稿 ---
 st.sidebar.markdown("### 👤 ログイン設定")
 
-# valueを外してkeyのみにし、セッションステートで直接保持させる
-st.sidebar.text_input("Threads ID（例: ryu_golf300yd）", key="logged_in_user")
+# 初期値を空にしてプレースホルダーのみ表示
+user_input = st.sidebar.text_input(
+    "Threads ID",
+    value=st.session_state.logged_in_user,
+    placeholder="例: ryu_golf300yd"
+)
+st.session_state.logged_in_user = user_input.strip()
+
 current_user = st.session_state.logged_in_user
-st.sidebar.markdown(f"ログイン中: **@{current_user}**")
+if current_user:
+    st.sidebar.markdown(f"ログイン中: **@{current_user}**")
+else:
+    st.sidebar.markdown("<span style='color: #888; font-size: 13px;'>※ IDを入力してください</span>", unsafe_allow_html=True)
 
 st.sidebar.markdown("---")
 st.sidebar.markdown("### ✍️ 新規メンバー募集")
@@ -264,27 +273,30 @@ with st.sidebar.form("create_post_form", clear_on_submit=False):
     
     submitted = st.form_submit_button("募集を投稿する")
     if submitted:
-        course_name = target_course.strip() if target_course.strip() else "指定なし"
-        new_id = len(st.session_state.posts) + 1
-        
-        new_post = {
-            "id": new_id,
-            "is_sample": False,
-            "host": current_user,
-            "course": course_name,
-            "score": user_score,
-            "composition": composition_type,
-            "pref": reg_pref,
-            "city": reg_city,
-            "current_members": current_m,
-            "max_members": max_m,
-            "comment": post_comment,
-            "threads": f"https://www.threads.net/@{current_user}",
-            "comments": []
-        }
-        st.session_state.posts.insert(0, new_post)
-        save_posts(st.session_state.posts)
-        st.sidebar.success("投稿しました！")
+        if not current_user:
+            st.sidebar.error("上の「ログイン設定」にThreads IDを入力してください。")
+        else:
+            course_name = target_course.strip() if target_course.strip() else "指定なし"
+            new_id = len(st.session_state.posts) + 1
+            
+            new_post = {
+                "id": new_id,
+                "is_sample": False,
+                "host": current_user,
+                "course": course_name,
+                "score": user_score,
+                "composition": composition_type,
+                "pref": reg_pref,
+                "city": reg_city,
+                "current_members": current_m,
+                "max_members": max_m,
+                "comment": post_comment,
+                "threads": f"https://www.threads.net/@{current_user}",
+                "comments": []
+            }
+            st.session_state.posts.insert(0, new_post)
+            save_posts(st.session_state.posts)
+            st.sidebar.success("投稿しました！")
 
 # --- サイドバー：おすすめゴルフギア ---
 st.sidebar.markdown("---")
@@ -369,7 +381,8 @@ for post in filtered_posts:
         c_input = st.text_input("コメントを入力（参加希望や質問など）", key=f"input_{post['id']}")
         c_sub = st.form_submit_button("コメントする")
         if c_sub and c_input:
-            post['comments'].append([current_user, c_input])
+            active_comment_user = current_user if current_user else "匿名ゴルファー"
+            post['comments'].append([active_comment_user, c_input])
             save_posts(st.session_state.posts)
             st.rerun()
 
