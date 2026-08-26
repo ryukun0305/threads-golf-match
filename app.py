@@ -72,6 +72,15 @@ st.markdown("""
     .gear-link:hover {
         background-color: #272c30;
     }
+    .badge-sample {
+        background-color: #fff3bf;
+        color: #d9480f;
+        padding: 4px 10px;
+        border-radius: 20px;
+        font-size: 11px;
+        font-weight: 700;
+        border: 1px solid #ffe066;
+    }
     .badge-mix {
         background-color: #e7f5ff;
         color: #0c8599;
@@ -194,6 +203,7 @@ if "posts" not in st.session_state:
     st.session_state.posts = [
         {
             "id": 1,
+            "is_sample": True,
             "host": "ryu_golf300yd", 
             "course": "姫路周辺のゴルフ場", 
             "score": "90台", 
@@ -202,9 +212,9 @@ if "posts" not in st.session_state:
             "city": "姫路市", 
             "current_members": 2,
             "max_members": 4,
-            "comment": "姫路周辺で楽しくラウンドしましょう！",
+            "comment": "【投稿例】姫路周辺で楽しくラウンドしましょう！お気軽にコメントください！",
             "threads": "https://www.threads.net/@ryu_golf300yd",
-            "comments": [["sakura_golf", "参加したいです！よろしくお願いします！"]]
+            "comments": [["sakura_golf", "参加希望です！よろしくお願いします！（※コメント例）"]]
         }
     ]
 
@@ -232,6 +242,7 @@ with st.sidebar.form("create_post_form", clear_on_submit=False):
         new_id = len(st.session_state.posts) + 1
         st.session_state.posts.insert(0, {
             "id": new_id,
+            "is_sample": False,
             "host": logged_in_user,
             "course": target_course,
             "score": user_score,
@@ -246,7 +257,7 @@ with st.sidebar.form("create_post_form", clear_on_submit=False):
         })
         st.sidebar.success("投稿しました！")
 
-# --- サイドバー：おすすめゴルフギア（個別アフィリエイト枠） ---
+# --- サイドバー：おすすめゴルフギア ---
 st.sidebar.markdown("---")
 st.sidebar.markdown("### 💡 おすすめゴルフギア")
 st.sidebar.markdown("<span style='font-size: 12px; color: #536471;'>ラウンドや自宅練習で本当に役立つ厳選アイテム</span>", unsafe_allow_html=True)
@@ -300,12 +311,14 @@ for post in filtered_posts:
     badge_class = "badge-mix" if post['composition'] == "男女混合・異性OK" else "badge-women"
     is_full = post['current_members'] >= post['max_members']
     status_text = "🔴 満員" if is_full else f"🟢 募集中 ({post['current_members']}/{post['max_members']}人)"
+    is_sample_badge = "<span class='badge-sample'>📌 投稿例（サンプル）</span>" if post.get("is_sample") else ""
     
     st.markdown(f"""
     <div class="golf-card">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; flex-wrap: wrap; gap: 6px;">
             <span style="font-weight: 700; font-size: 15px; color: #0f1419;">🏌️ 主催: @{post['host']}</span>
-            <div>
+            <div style="display: flex; gap: 6px; align-items: center;">
+                {is_sample_badge}
                 <span class="status-badge">{status_text}</span>
                 <span class="{badge_class}">{post['composition']}</span>
             </div>
