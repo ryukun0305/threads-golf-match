@@ -230,7 +230,7 @@ reg_pref = st.sidebar.selectbox("都道府県", list(prefectures_cities.keys()),
 reg_city = st.sidebar.selectbox("市", prefectures_cities[reg_pref], key="form_city")
 
 with st.sidebar.form("create_post_form", clear_on_submit=False):
-    target_course = st.text_input("ゴルフ場名", "姫路周辺のコース")
+    target_course = st.text_input("ゴルフ場名", value="", placeholder="例: 〇〇カントリークラブ")
     user_score = st.text_input("希望スコア帯", "90台")
     composition_type = st.selectbox("メンバー構成", ["男女混合・異性OK", "女子ゴルフ（女子のみ）"])
     max_m = st.slider("募集人数（最大4人）", 2, 4, 4)
@@ -239,6 +239,10 @@ with st.sidebar.form("create_post_form", clear_on_submit=False):
     
     submitted = st.form_submit_button("募集を投稿する")
     if submitted:
+        # 空欄チェック
+        if not target_course.strip():
+            target_course = "指定なし"
+        
         new_id = len(st.session_state.posts) + 1
         st.session_state.posts.insert(0, {
             "id": new_id,
