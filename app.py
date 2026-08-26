@@ -7,7 +7,7 @@ st.set_page_config(
     layout="centered"
 )
 
-# レスポンシブ対応＆デザインを洗練させたCSS
+# レスポンシブ対応＆デザインCSS
 st.markdown("""
 <style>
     .stApp {
@@ -246,31 +246,31 @@ with st.sidebar.form("create_post_form", clear_on_submit=False):
         })
         st.sidebar.success("投稿しました！")
 
-# --- サイドバー：おすすめゴルフギア（売れ筋アイテム） ---
+# --- サイドバー：おすすめゴルフギア（個別アフィリエイト枠） ---
 st.sidebar.markdown("---")
 st.sidebar.markdown("### 💡 おすすめゴルフギア")
-st.sidebar.markdown("<span style='font-size: 12px; color: #536471;'>楽天ランキング上位の厳選人気アイテム</span>", unsafe_allow_html=True)
+st.sidebar.markdown("<span style='font-size: 12px; color: #536471;'>ラウンドや自宅練習で本当に役立つ厳選アイテム</span>", unsafe_allow_html=True)
 
 st.sidebar.markdown("""
 <div class="gear-card">
-    <div class="gear-title">🔭 レーザー距離計</div>
-    <div class="gear-desc">高低差・ピンサーチ・USB充電対応。楽天1位常連の人気モデル。</div>
-    <a href="https://search.rakuten.co.jp/search/mall/%E3%82%B4%E3%83%AB%E3%83%95+%E3%83%AC%E3%83%BC%E3%82%84%E3%83%BC%E8%B7%9D%E9%9B%A2%E8%A8%88/" target="_blank" class="gear-link">楽天で見る ↗</a>
+    <div class="gear-title">🔭 Laser Sniper ELUA</div>
+    <div class="gear-desc">軽量・超高速計測＆高低差対応。コスパ最強の人気レーザー距離計。</div>
+    <a href="https://a.r10.to/hRKltx" target="_blank" class="gear-link">楽天で見る ↗</a>
 </div>
 <div class="gear-card">
-    <div class="gear-title">🏌️ 音で分かるスイング練習器具</div>
-    <div class="gear-desc">自宅で理想のタメと加速タイミングが掴める大ヒット練習スティック。</div>
-    <a href="https://search.rakuten.co.jp/search/mall/%E3%83%80%E3%82%A4%E3%83%A4%E3%82%B9%E3%82%A4%E3%83%B3%E3%82%B0/" target="_blank" class="gear-link">楽天で見る ↗</a>
+    <div class="gear-title">⛳ ツアーティー（TOUR TEE）</div>
+    <div class="gear-desc">折れにくく抵抗を極限まで削減。飛びと耐久性を両立した定番ティー。</div>
+    <a href="https://a.r10.to/hPjMLQ" target="_blank" class="gear-link">楽天で見る ↗</a>
 </div>
 <div class="gear-card">
-    <div class="gear-title">⛳ ツアーティー（Tour Tee 80mm）</div>
-    <div class="gear-desc">折れにくく抵抗を極限まで減らした大人気ロングティー。</div>
-    <a href="https://search.rakuten.co.jp/search/mall/TOUR+TEE/" target="_blank" class="gear-link">楽天で見る ↗</a>
+    <div class="gear-title">🏌️ ダイヤスイング（練習器具）</div>
+    <div class="gear-desc">自宅で理想のタメとインパクトの加速ポイントが身につくロングセラー器具。</div>
+    <a href="https://a.r10.to/hPjqew" target="_blank" class="gear-link">楽天で見る ↗</a>
 </div>
 <div class="gear-card">
-    <div class="gear-title">⚡ 大人気ゴルフボール（HONMA D1等）</div>
-    <div class="gear-desc">圧倒的なコスパと圧倒的な飛距離でリピーター続出のベストセラー。</div>
-    <a href="https://search.rakuten.co.jp/search/mall/%E6%9C%AC%E9%96%93%E3%82%B4%E3%83%AB%E3%83%95+D1+%E3%83%9C%E3%83%BC%E3%83%AB/" target="_blank" class="gear-link">楽天で見る ↗</a>
+    <div class="gear-title">⚡ タイトリスト PRO V1</div>
+    <div class="gear-desc">世界中のツアープロが認める圧倒的スピン性能と直進性。</div>
+    <a href="https://a.r10.to/hP8EcH" target="_blank" class="gear-link">楽天で見る ↗</a>
 </div>
 """, unsafe_allow_html=True)
 
