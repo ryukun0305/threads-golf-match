@@ -198,7 +198,7 @@ prefectures_cities = {
     "沖縄県": ["那覇市", "沖縄市", "うるま市", "宜野湾市"]
 }
 
-# セッション状態の初期化
+# セッション状態の初期化（一度だけ設定）
 if "posts" not in st.session_state:
     st.session_state.posts = [
         {
@@ -218,9 +218,14 @@ if "posts" not in st.session_state:
         }
     ]
 
+if "logged_in_user" not in st.session_state:
+    st.session_state.logged_in_user = "ryu_golf300yd"
+
 # --- サイドバー：ログインと新規投稿 ---
 st.sidebar.markdown("### 👤 ログイン設定")
-logged_in_user = st.sidebar.text_input("Threads ID（例: ryu_golf300yd）", value="ryu_golf300yd")
+# セッション状態をバインドして入力値が勝手に消えないようにする
+logged_in_user = st.sidebar.text_input("Threads ID（例: ryu_golf300yd）", value=st.session_state.logged_in_user)
+st.session_state.logged_in_user = logged_in_user
 st.sidebar.markdown(f"ログイン中: **@{logged_in_user}**")
 
 st.sidebar.markdown("---")
@@ -239,7 +244,6 @@ with st.sidebar.form("create_post_form", clear_on_submit=False):
     
     submitted = st.form_submit_button("募集を投稿する")
     if submitted:
-        # 空欄チェック
         if not target_course.strip():
             target_course = "指定なし"
         
