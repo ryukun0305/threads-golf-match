@@ -198,7 +198,7 @@ prefectures_cities = {
     "沖縄県": ["那覇市", "沖縄市", "うるま市", "宜野湾市"]
 }
 
-# セッション状態の初期化（一度だけ設定）
+# --- セッション状態の初期化 ---
 if "posts" not in st.session_state:
     st.session_state.posts = [
         {
@@ -223,10 +223,10 @@ if "logged_in_user" not in st.session_state:
 
 # --- サイドバー：ログインと新規投稿 ---
 st.sidebar.markdown("### 👤 ログイン設定")
-# セッション状態をバインドして入力値が勝手に消えないようにする
-logged_in_user = st.sidebar.text_input("Threads ID（例: ryu_golf300yd）", value=st.session_state.logged_in_user)
-st.session_state.logged_in_user = logged_in_user
-st.sidebar.markdown(f"ログイン中: **@{logged_in_user}**")
+# st.session_state を直接キーとしてバインドし、入力が常に保持されるようにする
+st.sidebar.text_input("Threads ID（例: ryu_golf300yd）", key="logged_in_user")
+current_user = st.session_state.logged_in_user
+st.sidebar.markdown(f"ログイン中: **@{current_user}**")
 
 st.sidebar.markdown("---")
 st.sidebar.markdown("### ✍️ 新規メンバー募集")
@@ -244,15 +244,15 @@ with st.sidebar.form("create_post_form", clear_on_submit=False):
     
     submitted = st.form_submit_button("募集を投稿する")
     if submitted:
-        if not target_course.strip():
-            target_course = "指定なし"
-        
+        course_name = target_course.strip() if target_course.strip() else "指定なし"
         new_id = len(st.session_state.posts) + 1
-        st.session_state.posts.insert(0, {
+        
+        # 新規投稿データをセッションの先頭に追加
+        new_post = {
             "id": new_id,
             "is_sample": False,
-            "host": logged_in_user,
-            "course": target_course,
+            "host": current_user,
+            "course": course_name,
             "score": user_score,
             "composition": composition_type,
             "pref": reg_pref,
@@ -260,9 +260,10 @@ with st.sidebar.form("create_post_form", clear_on_submit=False):
             "current_members": current_m,
             "max_members": max_m,
             "comment": post_comment,
-            "threads": f"https://www.threads.net/@{logged_in_user}",
+            "threads": f"https://www.threads.net/@{current_user}",
             "comments": []
-        })
+        }
+        st.session_state.posts.insert(0, new_post)
         st.sidebar.success("投稿しました！")
 
 # --- サイドバー：おすすめゴルフギア ---
@@ -348,14 +349,13 @@ for post in filtered_posts:
         c_input = st.text_input("コメントを入力（参加希望や質問など）", key=f"input_{post['id']}")
         c_sub = st.form_submit_button("コメントする")
         if c_sub and c_input:
-            post['comments'].append([logged_in_user, c_input])
+            post['comments'].append([current_user, c_input])
             st.rerun()
 
-    # 削除ボタン
-    if post['host'] == logged_in_user:
-        if st.button("🗑️ この募集を削除する", key=f"del_{post['id']}"):
-            st.session_state.posts = [p for p in st.session_state.posts if p['id'] != post['id']]
-            st.success("募集を削除しました。")
-            st.rerun()
+    # 削除ボタン（主催者本人またはサンプルの場合も削除可能に）
+    if st.button("🗑️ この募集を削除する", key=f"del_{post['id']}"):
+        st.session_state.posts = [p for p in st.session_state.posts if p['id'] != post['id']]
+        st.success("募集を削除しました。")
+        st.rerun()
 
     st.markdown("---")
