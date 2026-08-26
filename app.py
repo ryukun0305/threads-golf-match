@@ -262,28 +262,26 @@ st.sidebar.markdown("---")
 st.sidebar.markdown("### 💡 おすすめゴルフギア")
 st.sidebar.markdown("<span style='font-size: 12px; color: #536471;'>ラウンドや自宅練習で本当に役立つ厳選アイテム</span>", unsafe_allow_html=True)
 
-st.sidebar.markdown("""
-<div class="gear-card">
-    <div class="gear-title">🔭 Laser Sniper ELUA</div>
-    <div class="gear-desc">軽量・超高速計測＆高低差対応。コスパ最強の人気レーザー距離計。</div>
-    <a href="https://a.r10.to/hRKltx" target="_blank" class="gear-link">楽天で見る ↗</a>
+st.sidebar.markdown("""<div class="gear-card">
+<div class="gear-title">🔭 Laser Sniper ELUA</div>
+<div class="gear-desc">軽量・超高速計測＆高低差対応。コスパ最強の人気レーザー距離計。</div>
+<a href="https://a.r10.to/hRKltx" target="_blank" class="gear-link">楽天で見る ↗</a>
 </div>
 <div class="gear-card">
-    <div class="gear-title">⛳ ツアーティー（TOUR TEE）</div>
-    <div class="gear-desc">折れにくく抵抗を極限まで削減。飛びと耐久性を両立した定番ティー。</div>
-    <a href="https://a.r10.to/hPjMLQ" target="_blank" class="gear-link">楽天で見る ↗</a>
+<div class="gear-title">⛳ ツアーティー（TOUR TEE）</div>
+<div class="gear-desc">折れにくく抵抗を極限まで削減。飛びと耐久性を両立した定番ティー。</div>
+<a href="https://a.r10.to/hPjMLQ" target="_blank" class="gear-link">楽天で見る ↗</a>
 </div>
 <div class="gear-card">
-    <div class="gear-title">🏌️ ダイヤスイング（練習器具）</div>
-    <div class="gear-desc">自宅で理想のタメとインパクトの加速ポイントが身につくロングセラー器具。</div>
-    <a href="https://a.r10.to/hPjqew" target="_blank" class="gear-link">楽天で見る ↗</a>
+<div class="gear-title">🏌️ ダイヤスイング（練習器具）</div>
+<div class="gear-desc">自宅で理想のタメとインパクトの加速ポイントが身につくロングセラー器具。</div>
+<a href="https://a.r10.to/hPjqew" target="_blank" class="gear-link">楽天で見る ↗</a>
 </div>
 <div class="gear-card">
-    <div class="gear-title">⚡ タイトリスト PRO V1</div>
-    <div class="gear-desc">世界中のツアープロが認める圧倒的スピン性能と直進性。</div>
-    <a href="https://a.r10.to/hP8EcH" target="_blank" class="gear-link">楽天で見る ↗</a>
-</div>
-""", unsafe_allow_html=True)
+<div class="gear-title">⚡ タイトリスト PRO V1</div>
+<div class="gear-desc">世界中のツアープロが認める圧倒的スピン性能と直進性。</div>
+<a href="https://a.r10.to/hP8EcH" target="_blank" class="gear-link">楽天で見る ↗</a>
+</div>""", unsafe_allow_html=True)
 
 # --- メイン画面：検索と募集一覧 ---
 st.markdown("### 🔍 ラウンド募集を検索")
@@ -313,24 +311,23 @@ for post in filtered_posts:
     status_text = "🔴 満員" if is_full else f"🟢 募集中 ({post['current_members']}/{post['max_members']}人)"
     is_sample_badge = "<span class='badge-sample'>📌 投稿例（サンプル）</span>" if post.get("is_sample") else ""
     
-    st.markdown(f"""
-    <div class="golf-card">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; flex-wrap: wrap; gap: 6px;">
-            <span style="font-weight: 700; font-size: 15px; color: #0f1419;">🏌️ 主催: @{post['host']}</span>
-            <div style="display: flex; gap: 6px; align-items: center;">
-                {is_sample_badge}
-                <span class="status-badge">{status_text}</span>
-                <span class="{badge_class}">{post['composition']}</span>
-            </div>
-        </div>
-        <div style="color: #536471; font-size: 13px; margin-bottom: 8px; font-weight: 500;">
-            📍 <b>エリア:</b> {post['pref']} {post['city']} &nbsp;|&nbsp; ⛳ <b>コース:</b> {post['course']} &nbsp;|&nbsp; 🎯 <b>スコア:</b> {post['score']}
-        </div>
-        <div style="background-color: #f7f9f9; padding: 12px; border-radius: 12px; color: #0f1419; font-size: 14px; margin-bottom: 10px;">
-            "{post['comment']}"
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
+    card_html = f"""<div class="golf-card">
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; flex-wrap: wrap; gap: 6px;">
+<span style="font-weight: 700; font-size: 15px; color: #0f1419;">🏌️ 主催: @{post['host']}</span>
+<div style="display: flex; gap: 6px; align-items: center;">
+{is_sample_badge}
+<span class="status-badge">{status_text}</span>
+<span class="{badge_class}">{post['composition']}</span>
+</div>
+</div>
+<div style="color: #536471; font-size: 13px; margin-bottom: 8px; font-weight: 500;">
+📍 <b>エリア:</b> {post['pref']} {post['city']} &nbsp;|&nbsp; ⛳ <b>コース:</b> {post['course']} &nbsp;|&nbsp; 🎯 <b>スコア:</b> {post['score']}
+</div>
+<div style="background-color: #f7f9f9; padding: 12px; border-radius: 12px; color: #0f1419; font-size: 14px; margin-bottom: 10px;">
+"{post['comment']}"
+</div>
+</div>"""
+    st.markdown(card_html, unsafe_allow_html=True)
     
     # コメント一覧
     if post['comments']:
