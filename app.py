@@ -1,4 +1,6 @@
 import streamlit as st
+import json
+import os
 
 # ページ設定
 st.set_page_config(
@@ -6,6 +8,47 @@ st.set_page_config(
     page_icon="⛳",
     layout="centered"
 )
+
+DATA_FILE = "posts.json"
+
+# データの読み込み関数
+def load_posts():
+    if os.path.exists(DATA_FILE):
+        try:
+            with open(DATA_FILE, "r", encoding="utf-8") as f:
+                return json.load(f)
+        except Exception:
+            pass
+    # デフォルトのサンプルデータ
+    return [
+        {
+            "id": 1,
+            "is_sample": True,
+            "host": "ryu_golf300yd", 
+            "course": "姫路周辺のゴルフ場", 
+            "score": "90台", 
+            "composition": "男女混合・異性OK", 
+            "pref": "兵庫県",
+            "city": "姫路市", 
+            "current_members": 2,
+            "max_members": 4,
+            "comment": "【投稿例】姫路周辺で楽しくラウンドしましょう！お気軽にコメントください！",
+            "threads": "https://www.threads.net/@ryu_golf300yd",
+            "comments": [["sakura_golf", "参加希望です！よろしくお願いします！（※コメント例）"]]
+        }
+    ]
+
+# データの保存関数
+def save_posts(posts):
+    with open(DATA_FILE, "w", encoding="utf-8") as f:
+        json.dump(posts, f, ensure_ascii=False, indent=4)
+
+# セッション状態の初期化
+if "posts" not in st.session_state:
+    st.session_state.posts = load_posts()
+
+if "logged_in_user" not in st.session_state:
+    st.session_state.logged_in_user = "ryu_golf300yd"
 
 # レスポンシブ対応＆デザインCSS
 st.markdown("""
@@ -198,32 +241,8 @@ prefectures_cities = {
     "沖縄県": ["那覇市", "沖縄市", "うるま市", "宜野湾市"]
 }
 
-# --- セッション状態の初期化 ---
-if "posts" not in st.session_state:
-    st.session_state.posts = [
-        {
-            "id": 1,
-            "is_sample": True,
-            "host": "ryu_golf300yd", 
-            "course": "姫路周辺のゴルフ場", 
-            "score": "90台", 
-            "composition": "男女混合・異性OK", 
-            "pref": "兵庫県",
-            "city": "姫路市", 
-            "current_members": 2,
-            "max_members": 4,
-            "comment": "【投稿例】姫路周辺で楽しくラウンドしましょう！お気軽にコメントください！",
-            "threads": "https://www.threads.net/@ryu_golf300yd",
-            "comments": [["sakura_golf", "参加希望です！よろしくお願いします！（※コメント例）"]]
-        }
-    ]
-
-if "logged_in_user" not in st.session_state:
-    st.session_state.logged_in_user = "ryu_golf300yd"
-
 # --- サイドバー：ログインと新規投稿 ---
 st.sidebar.markdown("### 👤 ログイン設定")
-# st.session_state を直接キーとしてバインドし、入力が常に保持されるようにする
 st.sidebar.text_input("Threads ID（例: ryu_golf300yd）", key="logged_in_user")
 current_user = st.session_state.logged_in_user
 st.sidebar.markdown(f"ログイン中: **@{current_user}**")
@@ -247,7 +266,6 @@ with st.sidebar.form("create_post_form", clear_on_submit=False):
         course_name = target_course.strip() if target_course.strip() else "指定なし"
         new_id = len(st.session_state.posts) + 1
         
-        # 新規投稿データをセッションの先頭に追加
         new_post = {
             "id": new_id,
             "is_sample": False,
@@ -264,6 +282,7 @@ with st.sidebar.form("create_post_form", clear_on_submit=False):
             "comments": []
         }
         st.session_state.posts.insert(0, new_post)
+        save_posts(st.session_state.posts)  # JSONファイルに保存
         st.sidebar.success("投稿しました！")
 
 # --- サイドバー：おすすめゴルフギア ---
@@ -350,11 +369,13 @@ for post in filtered_posts:
         c_sub = st.form_submit_button("コメントする")
         if c_sub and c_input:
             post['comments'].append([current_user, c_input])
+            save_posts(st.session_state.posts)  # コメントもJSONファイルに保存
             st.rerun()
 
-    # 削除ボタン（主催者本人またはサンプルの場合も削除可能に）
+    # 削除ボタン
     if st.button("🗑️ この募集を削除する", key=f"del_{post['id']}"):
         st.session_state.posts = [p for p in st.session_state.posts if p['id'] != post['id']]
+        save_posts(st.session_state.posts)  # 削除後もJSONファイルを更新
         st.success("募集を削除しました。")
         st.rerun()
 
