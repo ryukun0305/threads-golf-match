@@ -40,6 +40,14 @@ st.markdown("""
         margin-bottom: 16px;
         width: 100%;
     }
+    .gear-card {
+        background: #ffffff;
+        padding: 12px;
+        border-radius: 12px;
+        border: 1px solid #e2e8f0;
+        margin-bottom: 10px;
+        font-size: 13px;
+    }
     .badge-mix {
         background-color: #e7f5ff;
         color: #0c8599;
@@ -213,6 +221,29 @@ with st.sidebar.form("create_post_form", clear_on_submit=False):
             "comments": []
         })
         st.sidebar.success("投稿しました！")
+
+# --- サイドバー：おすすめゴルフギア（アフィリエイト枠） ---
+st.sidebar.markdown("---")
+st.sidebar.markdown("### 💡 おすすめゴルフギア")
+st.sidebar.markdown("<span style='font-size: 12px; color: #536471;'>ラウンドや自宅練習で本当に役立つ厳選アイテム</span>", unsafe_allow_html=True)
+
+st.sidebar.markdown("""
+<div class="gear-card">
+    <b>🔭 USB充電式レーザー距離計</b><br>
+    <span style="color: #536471;">高低差測定・ピンサーチ機能付き。ラウンドの必須アイテム！</span><br>
+    <a href="https://hb.afl.rakuten.co.jp/" target="_blank" style="color: #0c8599; font-weight: 600; text-decoration: none;">👉 詳細を見る（楽天）</a>
+</div>
+<div class="gear-card">
+    <b>🏌️‍♂️ 室内スイング練習スティック</b><br>
+    <span style="color: #536471;">自宅で手軽にタメとヘッドスピード強化。</span><br>
+    <a href="https://hb.afl.rakuten.co.jp/" target="_blank" style="color: #0c8599; font-weight: 600; text-decoration: none;">👉 詳細を見る（楽天）</a>
+</div>
+<div class="gear-card">
+    <b>⚡ 高コスパ ツアー系ウレタンボール</b><br>
+    <span style="color: #536471;">スーンと伸びる直進性と優れたスピン性能。</span><br>
+    <a href="https://hb.afl.rakuten.co.jp/" target="_blank" style="color: #0c8599; font-weight: 600; text-decoration: none;">👉 詳細を見る（楽天）</a>
+</div>
+""", unsafe_allow_html=True)
 
 # --- メイン画面：検索と募集一覧 ---
 st.markdown("### 🔍 ラウンド募集を検索")
